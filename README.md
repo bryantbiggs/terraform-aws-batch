@@ -154,21 +154,21 @@ module "batch" {
 Examples codified under the [`examples`](https://github.com/terraform-aws-modules/terraform-aws-batch/tree/master/examples) are intended to give users references for how to use the module(s) as well as testing/validating changes to the source code of the module. If contributing to the project, please be sure to make any appropriate updates to the relevant examples to allow maintainers to test your changes and to keep the examples up to date for users. Thank you!
 
 - [EC2](https://github.com/terraform-aws-modules/terraform-aws-batch/tree/master/examples/ec2)
-- [Fargate](https://github.com/terraform-aws-modules/terraform-aws-batch/tree/master/examples/fargate)
+- [ECS Fargate](https://github.com/terraform-aws-modules/terraform-aws-batch/tree/master/examples/ecs-fargate)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.30 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.38 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3.30 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.38 |
 
 ## Modules
 

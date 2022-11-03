@@ -10,11 +10,9 @@ resource "aws_batch_compute_environment" "this" {
   compute_environment_name        = lookup(each.value, "name", null)
   compute_environment_name_prefix = try(each.value.name_prefix, null) != null ? "${each.value.name_prefix}-" : null
 
-  service_role = var.create_service_iam_role ? aws_iam_role.service[0].arn : each.value.service_role
-  type         = lookup(each.value, "type", "MANAGED")
-
   dynamic "compute_resources" {
-    for_each = can(each.value.compute_resources.subnets) ? [each.value.compute_resources] : []
+    for_each = try([each.value.compute_resources], [])
+
     content {
       type                = compute_resources.value.type
       allocation_strategy = contains(["FARGATE", "FARGATE_SPOT"], compute_resources.value.type) ? null : try(compute_resources.value.allocation_strategy, null)
@@ -53,11 +51,23 @@ resource "aws_batch_compute_environment" "this" {
     }
   }
 
+  dynamic "eks_configuration" {
+    for_each = try([each.value.eks_configuration], [])
+
+    content {
+      eks_cluster_arn      = try(eks_configuration.value.eks_cluster_arn, null)
+      kubernetes_namespace = try(eks_configuration.value.kubernetes_namespace, null)
+    }
+  }
+
+  service_role = var.create_service_iam_role ? aws_iam_role.service[0].arn : each.value.service_role
+  type         = lookup(each.value, "type", "MANAGED")
+
+  tags = merge(var.tags, lookup(each.value, "tags", {}))
+
   # Prevent a race condition during environment deletion, otherwise the policy may be destroyed
   # too soon and the compute environment will then get stuck in the `DELETING` state
   depends_on = [aws_iam_role_policy_attachment.service]
-
-  tags = merge(var.tags, lookup(each.value, "tags", {}))
 }
 
 ################################################################################
